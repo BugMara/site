@@ -16,6 +16,7 @@ export function Cursor() {
       <div className={styles.ring} data-cursor-ring>
         <span className={`${styles.label} micro`} data-cursor-label />
       </div>
+      <div className={styles.twin} data-cursor-twin />
     </div>
   );
 }

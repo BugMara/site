@@ -115,6 +115,15 @@
   margin-top: var(--s-2);
 }
 
+.visit {
+  margin-top: var(--s-2);
+  color: var(--c-fg-2);
+}
+
+.visit[hidden] {
+  display: none;
+}
+
 /* Elevation line: revealed by pointer proximity when the field is live; otherwise visible. */
 .hero:global(.is-live) .elev {
   opacity: var(--p, 0);
@@ -188,6 +197,10 @@
   .clock {
     justify-self: start;
     margin-top: 0;
+  }
+
+  .visit {
+    grid-column: 1 / -1;
   }
 }
 

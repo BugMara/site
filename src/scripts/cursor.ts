@@ -15,6 +15,7 @@ export function initCursor(root: HTMLElement): void {
   const dot = root.querySelector<HTMLElement>('[data-cursor-dot]');
   const ring = root.querySelector<HTMLElement>('[data-cursor-ring]');
   const label = root.querySelector<HTMLElement>('[data-cursor-label]');
+  const twin = root.querySelector<HTMLElement>('[data-cursor-twin]');
   if (!dot || !ring || !label) return;
 
   const html = document.documentElement;
@@ -29,6 +30,8 @@ export function initCursor(root: HTMLElement): void {
     ry = lerp(ry, y, 0.35);
     dot.style.translate = `${x}px ${y}px`;
     ring.style.translate = `${rx}px ${ry}px`;
+    // The twin: the pointer reflected through the centre of the viewport.
+    if (twin) twin.style.translate = `${window.innerWidth - rx}px ${window.innerHeight - ry}px`;
     return Math.abs(rx - x) + Math.abs(ry - y) > 0.05;
   });
 

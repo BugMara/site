@@ -250,6 +250,36 @@ p {
   color: var(--c-accent);
 }
 
+/* ---- sleep (scripts/sleep.ts) ------------------------------------------ */
+
+.veil {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: var(--c-bg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 400ms var(--ease-io);
+}
+
+html[data-asleep] .veil {
+  opacity: 0.97;
+  transition-duration: 2400ms;
+}
+
+html[data-asleep] [data-awake] {
+  position: relative;
+  z-index: 60;
+}
+
+html[data-asleep] [data-status-text] {
+  display: none;
+}
+
+html[data-asleep] [data-sleep-text] {
+  display: inline;
+}
+
 /* ---- the site remembers a rebuild ------------------------------------- */
 
 html[data-rebuilt] .again {

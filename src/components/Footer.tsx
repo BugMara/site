@@ -39,6 +39,10 @@ export function Footer() {
           Top ↑
         </a>
       </div>
+
+      <p className={`${styles.below} micro`} data-below aria-hidden="true">
+        There is nothing below this.
+      </p>
     </footer>
   );
 }

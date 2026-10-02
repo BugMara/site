@@ -14,6 +14,16 @@
   color: var(--c-fg);
 }
 
+.manifesto {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Read backwards while scrolling up (scripts/manifesto.ts). */
+.manifesto:global(.is-reversed) {
+  flex-direction: column-reverse;
+}
+
 .manifesto p {
   color: var(--c-fg-3);
   transition: color var(--d-2) var(--ease-out);

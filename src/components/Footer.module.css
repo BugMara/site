@@ -57,6 +57,17 @@
   display: inline-flex;
 }
 
+.below {
+  margin-top: var(--s-7);
+  text-align: center;
+  opacity: 0;
+  transition: opacity var(--d-3) var(--ease-out);
+}
+
+.below:global(.is-on) {
+  opacity: 1;
+}
+
 @media (max-width: 47.99em) {
   .top {
     flex-direction: column;

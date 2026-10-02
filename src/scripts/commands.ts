@@ -2,7 +2,8 @@ import { emit } from './bus';
 
 /**
  * The page listens. Type anywhere (no input field) and the last letters are echoed in a
- * tiny mono readout; a recognised word runs:
+ * tiny mono readout; a recognised word runs. Highlighting a word on the page runs it too:
+ * select "WE BREAK." in the manifesto and the headline collapses.
  *   BREAK   drop every letter of the headline
  *   BUILD   put it back
  *   WORK / ABOUT / LAB / CONTACT   go there
@@ -47,5 +48,22 @@ export function initCommands(echo: HTMLElement): void {
       return;
     }
     show(`> ${buffer}`);
+  });
+
+  // ---- selection ---------------------------------------------------------
+  let lastSelection = '';
+  let selTimer = 0;
+  document.addEventListener('selectionchange', () => {
+    window.clearTimeout(selTimer);
+    selTimer = window.setTimeout(() => {
+      const text = (window.getSelection()?.toString() ?? '').toUpperCase().trim();
+      if (!text || text === lastSelection) return;
+      lastSelection = text;
+      const words = text.split(/[^A-Z]+/);
+      const word = Object.keys(COMMANDS).find((w) => words.includes(w));
+      if (!word) return;
+      show(`> ${word}`, true);
+      COMMANDS[word]?.();
+    }, 250);
   });
 }

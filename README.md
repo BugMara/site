@@ -81,9 +81,11 @@ href: /work/name # optional; the row becomes a link when present
 
 ## Interactions
 
-The headline is destructible (click letters; type BREAK / BUILD anywhere), rewrites itself when
-you stop moving, the clock runs backwards under the pointer, the tab notices when you leave,
-and the site remembers what you did. All of them are discoverable, none are announced. The list, with their touch and keyboard equivalents, is in `docs/DESIGN.md` §5. Everything degrades: the page is complete with JavaScript disabled, and under `prefers-reduced-motion` the cursor, proximity and measuring modules do not start.
+The headline is destructible (click letters; type or highlight BREAK / BUILD anywhere), rewrites
+itself when you stop moving, the clock runs backwards under the pointer, the tab notices when you
+leave, the page falls asleep after 45 seconds, your pointer has a twin, the manifesto reads
+backwards when you scroll up, the footer answers if you try to scroll past it, and the site
+remembers you between visits. All of them are discoverable, none are announced. The list, with their touch and keyboard equivalents, is in `docs/DESIGN.md` §5. Everything degrades: the page is complete with JavaScript disabled, and under `prefers-reduced-motion` the cursor, proximity and measuring modules do not start.
 
 ## Performance
 

@@ -10,7 +10,7 @@ export function About() {
       <SectionHead index="02" label="About" id="about-title" />
 
       <div className={`${styles.body} grid`}>
-        <div className={`${styles.manifesto} h1`} data-reveal>
+        <div className={`${styles.manifesto} h1`} data-reveal data-manifesto>
           <p>We are BugMara.</p>
           <p>We build.</p>
           <SplitText as="p" className={styles.break} lines={['WE BREAK.']} data-fracture="" />
