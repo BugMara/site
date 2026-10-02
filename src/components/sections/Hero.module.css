@@ -46,9 +46,59 @@
   color: var(--c-fg);
 }
 
+.title {
+  position: relative;
+}
+
 /* `--p` (0..1) is written per letter by scripts/hero.ts; `--base` by the scroll animation. */
 .title :global(.ch) {
   font-stretch: calc(var(--base) + var(--p, 0) * 10%);
+  transition:
+    margin-right 420ms var(--ease-out),
+    opacity 140ms var(--ease-io);
+}
+
+/* ---- a letter knocked off the sentence (scripts/fall.ts) ------------------- */
+/* The original hides and its advance collapses so the word closes up … */
+.title :global(.ch[data-gone]) {
+  visibility: hidden;
+  margin-right: calc(-1 * var(--w, 0px));
+  transition: margin-right 480ms var(--ease-io) 520ms;
+}
+
+/* … while a clone pinned where it stood does the falling. */
+.title :global(.ch.ghost) {
+  position: absolute;
+  display: inline-block;
+  pointer-events: none;
+  color: var(--c-fg);
+  transition:
+    translate var(--return, 720ms) var(--ease-out) var(--delay, 0ms),
+    rotate var(--return, 720ms) var(--ease-out) var(--delay, 0ms),
+    color 720ms var(--ease-io);
+}
+
+.title :global(.ch.ghost[data-fallen]) {
+  translate: var(--dx, 0px) var(--fall, 0px);
+  rotate: var(--rot, 0deg);
+  color: var(--c-fg-3);
+  transition:
+    translate 720ms cubic-bezier(0.45, 0, 1, 0.55),
+    rotate 720ms cubic-bezier(0.45, 0, 1, 0.55),
+    color 720ms var(--ease-io);
+}
+
+/* ---- a letter being rewritten while nobody is looking (scripts/idle.ts) ---- */
+.title :global(.ch.is-swapping) {
+  opacity: 0;
+}
+
+.rebuild {
+  color: var(--c-accent);
+}
+
+.rebuild[hidden] {
+  display: none;
 }
 
 .coords {

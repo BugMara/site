@@ -81,7 +81,9 @@ href: /work/name # optional; the row becomes a link when present
 
 ## Interactions
 
-All of them are discoverable, none are announced. The list, with their touch and keyboard equivalents, is in `docs/DESIGN.md` §5. Everything degrades: the page is complete with JavaScript disabled, and under `prefers-reduced-motion` the cursor, proximity and measuring modules do not start.
+The headline is destructible (click letters; type BREAK / BUILD anywhere), rewrites itself when
+you stop moving, the clock runs backwards under the pointer, the tab notices when you leave,
+and the site remembers what you did. All of them are discoverable, none are announced. The list, with their touch and keyboard equivalents, is in `docs/DESIGN.md` §5. Everything degrades: the page is complete with JavaScript disabled, and under `prefers-reduced-motion` the cursor, proximity and measuring modules do not start.
 
 ## Performance
 

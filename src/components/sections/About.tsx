@@ -15,7 +15,7 @@ export function About() {
           <p>We build.</p>
           <SplitText as="p" className={styles.break} lines={['WE BREAK.']} data-fracture="" />
           <p>We learn.</p>
-          <p>We build again.</p>
+          <p className={`${styles.again} again`}>We build again.</p>
         </div>
 
         <div className={styles.text} data-reveal style={{ '--delay': '120ms' } as CSSProperties}>

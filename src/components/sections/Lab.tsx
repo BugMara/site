@@ -2,6 +2,7 @@
 
 import type { CSSProperties } from 'react';
 import { SectionHead } from '@/components/SectionHead';
+import { SplitText } from '@/components/SplitText';
 import { initLab } from '@/scripts/lab';
 import { useInit } from '@/scripts/useInit';
 import styles from './Lab.module.css';
@@ -64,9 +65,18 @@ export function Lab({ categories }: Props) {
             style={{ '--delay': `${i * 70}ms` } as CSSProperties}
             data-reveal
             data-lab-row
+            data-key={c.key}
           >
             <span className={`${styles.idx} meta`}>{c.index}</span>
-            <span className={`${styles.name} h2`}>{c.label}</span>
+            {c.key === 'failures' ? (
+              <SplitText
+                as="span"
+                className={`${styles.name} ${styles.sag} h2`}
+                lines={[c.label.toUpperCase()]}
+              />
+            ) : (
+              <span className={`${styles.name} h2`}>{c.label}</span>
+            )}
             <span className={`${styles.count} meta`}>
               <span className={styles.n}>{pad(c.count)}</span> entries
             </span>

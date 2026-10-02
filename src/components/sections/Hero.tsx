@@ -1,23 +1,33 @@
 'use client';
 
+import { useCallback } from 'react';
 import { SplitText } from '@/components/SplitText';
 import { Clock } from '@/components/Clock';
 import { formatCoordinate, site } from '@/config/site';
 import { initHero } from '@/scripts/hero';
+import { initFall } from '@/scripts/fall';
+import { initIdle } from '@/scripts/idle';
 import { useInit } from '@/scripts/useInit';
 import styles from './Hero.module.css';
 
 export function Hero() {
-  const ref = useInit<HTMLElement>(initHero);
+  const init = useCallback((el: HTMLElement) => {
+    initHero(el);
+    initFall(el);
+    initIdle(el);
+  }, []);
+  const ref = useInit<HTMLElement>(init);
   const { location } = site;
 
   return (
     <section className={`${styles.hero} wrap`} id="top" aria-labelledby="hero-title" ref={ref}>
       <div className={styles.top}>
-        <p className="meta">EXP. {site.experiment}</p>
+        <p className="meta">
+          EXP. <span data-exp>{site.experiment}</span>
+        </p>
         <p className={`${styles.status} meta`}>
-          <i className="dot dot--live" aria-hidden="true" />
-          <span>System active</span>
+          <i className="dot dot--live" aria-hidden="true" data-status-dot />
+          <span data-status-text>System active</span>
         </p>
       </div>
 
@@ -32,6 +42,7 @@ export function Hero() {
           className={`display ${styles.title}`}
           lines={['WE BUILD', 'THINGS.']}
           data-breathe=""
+          data-cursor="link"
         />
 
         <div className={`${styles.coords} micro`} data-proximity>
@@ -44,8 +55,11 @@ export function Hero() {
         </div>
       </div>
 
-      <div className={styles.foot}>
+      <div className={styles.foot} data-floor>
         <p className="meta">{site.tagline}</p>
+        <button className={`${styles.rebuild} meta`} type="button" data-rebuild hidden>
+          ↺ Rebuild
+        </button>
       </div>
     </section>
   );

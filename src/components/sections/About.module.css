@@ -62,15 +62,19 @@
 
 .break:hover :global(.ch),
 .break:active :global(.ch) {
-  translate: calc((var(--sx) - 0.5) * 0.06em) calc((var(--sy) - 0.5) * 0.08em);
-  rotate: calc((var(--sx) - 0.5) * 4deg);
+  translate: calc((var(--sx) - 0.5) * 0.22em) calc((var(--sy) - 0.5) * 0.26em);
+  rotate: calc((var(--sx) - 0.5) * 14deg);
 }
 
 /* The full stop falls further than the letters. */
 .break:hover :global(.ch:last-child),
 .break:active :global(.ch:last-child) {
-  translate: 0 0.1em;
-  rotate: 0deg;
+  translate: 0.1em 0.42em;
+  rotate: 24deg;
+}
+
+.again {
+  transition: color var(--d-3) var(--ease-out);
 }
 
 @media (prefers-reduced-motion: reduce) {

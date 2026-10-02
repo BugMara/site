@@ -7,3 +7,7 @@
 :global(html:not([data-js])) .clock {
   display: none;
 }
+
+.clock[data-rewind] {
+  color: var(--c-accent);
+}

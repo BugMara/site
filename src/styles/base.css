@@ -209,6 +209,15 @@ p {
   animation: dot-pulse 4s var(--ease-io) infinite;
 }
 
+.dot--fast {
+  animation-duration: 0.9s;
+}
+
+.dot--dead {
+  animation: none;
+  background: var(--c-fg-3);
+}
+
 @keyframes dot-pulse {
   0%,
   100% {
@@ -217,6 +226,34 @@ p {
   50% {
     opacity: 0.25;
   }
+}
+
+/* ---- command echo (scripts/commands.ts) -------------------------------- */
+
+.cmd {
+  position: fixed;
+  left: 50%;
+  bottom: var(--s-5);
+  translate: -50% 0;
+  z-index: var(--z-nav);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--d-2) var(--ease-out);
+}
+
+.cmd.is-on {
+  opacity: 1;
+  transition-duration: var(--d-1);
+}
+
+.cmd.is-hit {
+  color: var(--c-accent);
+}
+
+/* ---- the site remembers a rebuild ------------------------------------- */
+
+html[data-rebuilt] .again {
+  color: var(--c-accent) !important;
 }
 
 /* ---- reveal (JS-gated; without JS everything is simply visible) ---- */

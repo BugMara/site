@@ -75,6 +75,23 @@
   white-space: nowrap;
 }
 
+/* ---- FAILURES gives way under the pointer ------------------------------- */
+.sag :global(.ch) {
+  display: inline-block;
+  transition:
+    translate 480ms var(--ease-out),
+    rotate 480ms var(--ease-out);
+}
+
+.item:hover .sag :global(.ch),
+.item:active .sag :global(.ch) {
+  translate: 0 calc(var(--sy) * 0.3em);
+  rotate: calc((var(--sx) - 0.5) * 10deg);
+  transition:
+    translate 700ms cubic-bezier(0.45, 0, 1, 0.55),
+    rotate 700ms cubic-bezier(0.45, 0, 1, 0.55);
+}
+
 .n {
   color: var(--c-fg-2);
 }

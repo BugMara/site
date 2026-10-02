@@ -1,7 +1,10 @@
 /**
  * Live clocks. One timer drives every `[data-clock]` on the page.
  * Each node declares its zone with `data-tz`; the time is written into `[data-clock-time]`.
+ * While a clock is hovered it runs backwards, three times as fast. It snaps back on leave.
  */
+
+const REWIND_RATE = 3;
 
 const formatters = new Map<string, Intl.DateTimeFormat>();
 
@@ -31,8 +34,11 @@ export function initClocks(): void {
 
   const targets = nodes
     .map((node) => ({
+      node,
       tz: node.dataset.tz ?? 'UTC',
       out: node.querySelector<HTMLElement>('[data-clock-time]') ?? node,
+      /** Timestamp at which a hover started; 0 when running forward. */
+      rewindFrom: 0,
     }))
     .filter((t) => {
       try {
@@ -46,14 +52,33 @@ export function initClocks(): void {
   let timer = 0;
 
   const tick = () => {
-    const now = new Date();
+    const now = Date.now();
+    let rewinding = false;
     for (const t of targets) {
-      const text = formatterFor(t.tz).format(now);
+      const shown = t.rewindFrom ? t.rewindFrom - (now - t.rewindFrom) * REWIND_RATE : now;
+      if (t.rewindFrom) rewinding = true;
+      const text = formatterFor(t.tz).format(new Date(shown));
       if (t.out.textContent !== text) t.out.textContent = text;
     }
     // Align the next tick to the next whole second so the display never stutters.
-    timer = window.setTimeout(tick, 1000 - (Date.now() % 1000));
+    timer = window.setTimeout(tick, rewinding ? 1000 / REWIND_RATE : 1000 - (now % 1000));
   };
+
+  for (const t of targets) {
+    t.node.addEventListener('pointerenter', (e) => {
+      if (e.pointerType === 'touch') return;
+      t.rewindFrom = Date.now();
+      t.node.setAttribute('data-rewind', '');
+      window.clearTimeout(timer);
+      tick();
+    });
+    t.node.addEventListener('pointerleave', () => {
+      t.rewindFrom = 0;
+      t.node.removeAttribute('data-rewind');
+      window.clearTimeout(timer);
+      tick();
+    });
+  }
 
   const start = () => {
     if (!timer) tick();
