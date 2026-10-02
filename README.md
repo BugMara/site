@@ -25,6 +25,11 @@ npm run typecheck  # tsc --noEmit
 
 Node 22.12 or newer.
 
+`dev` and `build` use the webpack bundler, which also runs on the WebAssembly SWC fallback.
+That matters on locked-down Windows machines where an Application Control policy blocks the
+native `@next/swc-win32-x64-msvc` binary: Turbopack refuses to start there, webpack does not.
+`npm run dev:turbo` and `npm run build:turbo` use Turbopack where native bindings load.
+
 ## Structure
 
 ```
