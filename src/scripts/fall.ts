@@ -62,7 +62,7 @@ export function initFall(hero: HTMLElement): void {
     rebuildBtn.hidden = n === 0;
   };
 
-  const drop = (el: HTMLElement) => {
+  const drop = (el: HTMLElement, silent = false) => {
     if (ghosts.has(el) || returning) return;
     const r = el.getBoundingClientRect();
     const t = title.getBoundingClientRect();
@@ -89,6 +89,7 @@ export function initFall(hero: HTMLElement): void {
 
     el.style.setProperty('--w', `${r.width.toFixed(1)}px`);
     el.setAttribute('data-gone', '');
+    if (!silent) emit('fell', { index: letters.indexOf(el) });
 
     if (!brokenThisRound) {
       brokenThisRound = true;
@@ -100,8 +101,9 @@ export function initFall(hero: HTMLElement): void {
     setStatus();
   };
 
-  const rebuild = () => {
+  const rebuild = (detail?: unknown) => {
     if (!ghosts.size || returning) return;
+    const remote = !!(detail as { remote?: boolean } | undefined)?.remote;
     returning = true;
     let i = 0;
     for (const [el, ghost] of ghosts) {
@@ -118,7 +120,7 @@ export function initFall(hero: HTMLElement): void {
         brokenThisRound = false;
         document.documentElement.dataset.rebuilt = '';
         setStatus();
-        emit('rebuilt');
+        emit('rebuilt', { remote });
       },
       RETURN_MS + i * 30 + 40,
     );
@@ -136,9 +138,24 @@ export function initFall(hero: HTMLElement): void {
   };
 
   letters.forEach((el) => el.addEventListener('click', () => drop(el)));
-  rebuildBtn.addEventListener('click', rebuild);
+  rebuildBtn.addEventListener('click', () => rebuild());
   on('break-all', breakAll);
   on('rebuild', rebuild);
+  // Drops requested by other modules (another tab, a shake, a violent scroll).
+  on('drop', (detail) => {
+    const d = detail as { index?: number; remote?: boolean; count?: number } | undefined;
+    if (typeof d?.index === 'number') {
+      const el = letters[d.index];
+      if (el) drop(el, !!d.remote);
+      return;
+    }
+    const standing = letters.filter((l) => !ghosts.has(l));
+    const n = Math.min(d?.count ?? 1, standing.length);
+    for (let i = 0; i < n; i += 1) {
+      const el = standing.splice(Math.floor(Math.random() * standing.length), 1)[0];
+      if (el) drop(el);
+    }
+  });
 
   setStatus();
 }

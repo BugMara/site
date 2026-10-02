@@ -11,11 +11,11 @@ export function About() {
 
       <div className={`${styles.body} grid`}>
         <div className={`${styles.manifesto} h1`} data-reveal data-manifesto>
-          <p>We are BugMara.</p>
-          <p>We build.</p>
+          <SplitText as="p" lines={['WE ARE BUGMARA.']} />
+          <SplitText as="p" lines={['WE BUILD.']} />
           <SplitText as="p" className={styles.break} lines={['WE BREAK.']} data-fracture="" />
-          <p>We learn.</p>
-          <p className={`${styles.again} again`}>We build again.</p>
+          <SplitText as="p" lines={['WE LEARN.']} />
+          <SplitText as="p" className={`${styles.again} again`} lines={['WE BUILD AGAIN.']} />
         </div>
 
         <div className={styles.text} data-reveal style={{ '--delay': '120ms' } as CSSProperties}>

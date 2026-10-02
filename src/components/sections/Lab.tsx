@@ -44,9 +44,7 @@ export function Lab({ categories }: Props) {
       />
 
       <div className={`${styles.body} grid`}>
-        <p className={`${styles.statement} h1`} data-reveal>
-          The Lab
-        </p>
+        <SplitText as="p" className={`${styles.statement} h1`} lines={['THE LAB']} data-reveal="" />
         <p
           className={`${styles.intro} small`}
           data-reveal
@@ -68,15 +66,11 @@ export function Lab({ categories }: Props) {
             data-key={c.key}
           >
             <span className={`${styles.idx} meta`}>{c.index}</span>
-            {c.key === 'failures' ? (
-              <SplitText
-                as="span"
-                className={`${styles.name} ${styles.sag} h2`}
-                lines={[c.label.toUpperCase()]}
-              />
-            ) : (
-              <span className={`${styles.name} h2`}>{c.label}</span>
-            )}
+            <SplitText
+              as="span"
+              className={`${styles.name} ${c.key === 'failures' ? styles.sag : ''} h2`}
+              lines={[c.label.toUpperCase()]}
+            />
             <span className={`${styles.count} meta`}>
               <span className={styles.n}>{pad(c.count)}</span> entries
             </span>

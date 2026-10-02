@@ -19,6 +19,14 @@
   justify-items: start;
 }
 
+.instances {
+  color: var(--c-accent);
+}
+
+.instances[hidden] {
+  display: none;
+}
+
 .status {
   display: inline-flex;
   align-items: center;
@@ -79,7 +87,7 @@
 }
 
 .title :global(.ch.ghost[data-fallen]) {
-  translate: var(--dx, 0px) var(--fall, 0px);
+  translate: calc(var(--dx, 0px) + var(--slide, 0px)) var(--fall, 0px);
   rotate: var(--rot, 0deg);
   color: var(--c-fg-3);
   transition:

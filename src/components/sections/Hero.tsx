@@ -7,6 +7,9 @@ import { formatCoordinate, site } from '@/config/site';
 import { initHero } from '@/scripts/hero';
 import { initFall } from '@/scripts/fall';
 import { initIdle } from '@/scripts/idle';
+import { initDebris } from '@/scripts/debris';
+import { initShake } from '@/scripts/shake';
+import { initInstances } from '@/scripts/instances';
 import { useInit } from '@/scripts/useInit';
 import styles from './Hero.module.css';
 
@@ -15,6 +18,10 @@ export function Hero() {
     initHero(el);
     initFall(el);
     initIdle(el);
+    initDebris(el);
+    initShake(el);
+    const counter = el.querySelector<HTMLElement>('[data-instances]');
+    if (counter) initInstances(counter);
   }, []);
   const ref = useInit<HTMLElement>(init);
   const { location } = site;
@@ -32,6 +39,7 @@ export function Hero() {
             System idle
           </span>
         </p>
+        <p className={`${styles.instances} meta`} data-instances hidden />
       </div>
 
       <div className={`${styles.stage} grid`}>

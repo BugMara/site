@@ -2,6 +2,7 @@
 
 import type { CSSProperties } from 'react';
 import { SectionHead } from '@/components/SectionHead';
+import { SplitText } from '@/components/SplitText';
 import type { ProjectData } from '@/content/schema';
 import { initWork } from '@/scripts/work';
 import { useInit } from '@/scripts/useInit';
@@ -47,7 +48,7 @@ export function Work({ projects }: Props) {
           const inner = (
             <>
               <span className={`${styles.idx} meta`}>{index}</span>
-              <span className={`${styles.name} h2`}>{p.title}</span>
+              <SplitText as="span" className={`${styles.name} h2`} lines={[p.title]} />
               <span className={`${styles.meta} meta`}>
                 <span className={styles.cell}>{p.type ?? '—'}</span>
                 <span className={styles.cell}>{p.year ?? '—'}</span>

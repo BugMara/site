@@ -84,8 +84,11 @@ href: /work/name # optional; the row becomes a link when present
 The headline is destructible (click letters; type or highlight BREAK / BUILD anywhere), rewrites
 itself when you stop moving, the clock runs backwards under the pointer, the tab notices when you
 leave, the page falls asleep after 45 seconds, your pointer has a twin, the manifesto reads
-backwards when you scroll up, the footer answers if you try to scroll past it, and the site
-remembers you between visits. All of them are discoverable, none are announced. The list, with their touch and keyboard equivalents, is in `docs/DESIGN.md` §5. Everything degrades: the page is complete with JavaScript disabled, and under `prefers-reduced-motion` the cursor, proximity and measuring modules do not start.
+backwards when you scroll up, the footer answers if you try to scroll past it, the site remembers you between visits, every
+open tab is one organism (break a letter in one, it falls in all; the other tab's pointer shows up
+in yours), fallen letters slide when you drag the window or tilt the phone, the whole page decays
+the longer you stay, a violent scroll flick knocks letters off, the console has a `bugmara` API,
+and printing the page gives you an incident report. All of them are discoverable, none are announced. The list, with their touch and keyboard equivalents, is in `docs/DESIGN.md` §5. Everything degrades: the page is complete with JavaScript disabled, and under `prefers-reduced-motion` the cursor, proximity and measuring modules do not start.
 
 ## Performance
 

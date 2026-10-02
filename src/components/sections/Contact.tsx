@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import { SectionHead } from '@/components/SectionHead';
+import { SplitText } from '@/components/SplitText';
 import { Clock } from '@/components/Clock';
 import { site } from '@/config/site';
 import styles from './Contact.module.css';
@@ -10,11 +11,12 @@ export function Contact() {
       <SectionHead index="04" label="Contact" id="contact-title" />
 
       <div className={`${styles.body} grid`}>
-        <p className={`${styles.statement} h1`} data-reveal>
-          Say
-          <br />
-          hello.
-        </p>
+        <SplitText
+          as="p"
+          className={`${styles.statement} h1`}
+          lines={['SAY', 'HELLO.']}
+          data-reveal=""
+        />
 
         <div
           className={styles.channels}
