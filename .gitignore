@@ -1,6 +1,8 @@
 # build
-dist/
-.astro/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
 
 # dependencies
 node_modules/

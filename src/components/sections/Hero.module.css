@@ -1,0 +1,154 @@
+@property --base {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 100%;
+}
+
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100svh;
+  padding-top: calc(var(--nav-h) + var(--s-6));
+}
+
+/* ---- top-left metadata --------------------------------------------------- */
+.top {
+  display: grid;
+  gap: var(--s-2);
+  justify-items: start;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  color: var(--c-fg-2);
+}
+
+/* ---- stage --------------------------------------------------------------- */
+.stage {
+  align-content: center;
+  padding-block: var(--s-block);
+}
+
+.idx,
+.title {
+  grid-column: 3 / -1;
+}
+
+.idx {
+  margin-bottom: var(--s-6);
+}
+
+.title {
+  --base: 100%;
+  color: var(--c-fg);
+}
+
+/* `--p` (0..1) is written per letter by scripts/hero.ts; `--base` by the scroll animation. */
+.title :global(.ch) {
+  font-stretch: calc(var(--base) + var(--p, 0) * 10%);
+}
+
+.coords {
+  grid-column: 9 / -1;
+  justify-self: end;
+  display: grid;
+  gap: var(--s-1);
+  margin-top: var(--s-7);
+  text-align: right;
+}
+
+.clock {
+  justify-self: end;
+  margin-top: var(--s-2);
+}
+
+/* Elevation line: revealed by pointer proximity when the field is live; otherwise visible. */
+.hero:global(.is-live) .elev {
+  opacity: var(--p, 0);
+}
+
+/* ---- foot ---------------------------------------------------------------- */
+.foot {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: var(--s-6);
+  border-bottom: 1px solid var(--c-rule);
+}
+
+/* ---- scroll-linked: the statement compresses as it leaves ---------------- */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .title {
+      animation-name: hero-compress;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100svh;
+    }
+    .top,
+    .coords,
+    .idx {
+      animation-name: hero-fade;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root);
+      animation-range: 0 55svh;
+    }
+  }
+}
+
+@keyframes hero-compress {
+  to {
+    --base: 84%;
+    letter-spacing: -0.065em;
+    opacity: 0.3;
+  }
+}
+
+@keyframes hero-fade {
+  to {
+    opacity: 0;
+  }
+}
+
+/* ---- recomposition under lg ---------------------------------------------- */
+@media (max-width: 63.99em) {
+  /* Poster composition: the statement sits low, the void is above it. */
+  .stage {
+    align-content: end;
+    padding-block: var(--s-8) var(--s-7);
+  }
+
+  .idx,
+  .title {
+    grid-column: 1 / -1;
+  }
+
+  .coords {
+    grid-column: 1 / -1;
+    justify-self: start;
+    grid-template-columns: repeat(2, max-content);
+    column-gap: var(--s-7);
+    text-align: left;
+  }
+
+  .clock {
+    justify-self: start;
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 47.99em) {
+  .hero {
+    padding-top: calc(var(--nav-h) + var(--s-5));
+  }
+  .coords {
+    margin-top: var(--s-6);
+  }
+  .foot {
+    padding-bottom: var(--s-5);
+  }
+}

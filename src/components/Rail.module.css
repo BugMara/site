@@ -1,0 +1,35 @@
+.rail {
+  display: none;
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (min-width: 64em) {
+    .rail {
+      display: block;
+      position: fixed;
+      top: 0;
+      right: calc(var(--margin) / 2);
+      z-index: var(--z-rail);
+      width: 1px;
+      height: 100vh;
+      background: var(--c-rule);
+      pointer-events: none;
+    }
+
+    .pos {
+      width: 1px;
+      height: 24px;
+      background: var(--c-accent);
+      animation-name: rail-travel;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root);
+    }
+  }
+}
+
+@keyframes rail-travel {
+  to {
+    translate: 0 calc(100vh - 24px);
+  }
+}

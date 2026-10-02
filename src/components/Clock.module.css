@@ -1,0 +1,9 @@
+.clock {
+  display: inline-flex;
+  gap: 0.6em;
+  white-space: nowrap;
+}
+
+:global(html:not([data-js])) .clock {
+  display: none;
+}

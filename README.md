@@ -6,10 +6,10 @@ Minimal. Quiet. Precise. Then, occasionally, something moves that shouldn't.
 
 ## Stack
 
-- [Astro](https://astro.build) 7, static output, no client framework.
-- Scoped CSS per component; every colour, size, space and duration is a token in `src/styles/tokens.css`.
-- One small vanilla TypeScript module per interaction in `src/scripts/`, each gating itself on `prefers-reduced-motion` and pointer type.
-- Self-hosted fonts via Fontsource: Archivo (variable, width axis) and JetBrains Mono.
+- [Next.js](https://nextjs.org) 16 (App Router, React 19), exported as a fully static site (`output: 'export'`).
+- CSS Modules per component; every colour, size, space and duration is a token in `src/styles/tokens.css`.
+- One small vanilla TypeScript module per interaction in `src/scripts/`, each gating itself on `prefers-reduced-motion` and pointer type, mounted through a single `useInit` hook.
+- Self-hosted fonts through `next/font/local`: Archivo (variable, width axis) and JetBrains Mono.
 
 The design system is documented in [`docs/DESIGN.md`](docs/DESIGN.md).
 
@@ -17,10 +17,10 @@ The design system is documented in [`docs/DESIGN.md`](docs/DESIGN.md).
 
 ```sh
 npm install
-npm run dev        # http://localhost:4321
-npm run build      # static output in dist/
-npm run preview    # serve dist/
-npm run check      # type-check .astro and .ts
+npm run dev        # http://localhost:3000
+npm run build      # static output in out/
+npm run preview    # serve out/
+npm run typecheck  # tsc --noEmit
 ```
 
 Node 22.12 or newer.
@@ -29,23 +29,26 @@ Node 22.12 or newer.
 
 ```
 src/
+  app/layout.tsx            document shell: fonts, nav, footer, cursor, rail, enhancement gate
+  app/page.tsx              composition only; loads content at build time
+  app/fonts.ts              next/font/local declarations
   config/site.ts            facts about the organisation: name, tagline, location, email, links, nav
-  content.config.ts         content collections: projects, lab
-  content/projects/*.md     one file per project (placeholders in v1)
-  content/lab/*.md          one file per lab entry (template only in v1)
+  content/schema.ts         zod schemas: projects, lab
+  content/load.ts           Markdown + frontmatter loader (server only)
   styles/tokens.css         design tokens
   styles/base.css           reset, type classes, utilities, reduced-motion and no-JS gates
-  layouts/Base.astro        document shell: head, fonts, nav, footer, cursor, rail
-  components/               Nav, Footer, Cursor, Clock, Rail, SectionHead, SplitText
-  components/sections/      Hero, Work, About, Lab, Contact
-  scripts/                  motion primitives + one module per interaction
-  pages/index.astro         composition only
+  components/               Nav, Footer, Cursor, Clock, Rail, SectionHead, SplitText, Effects
+  components/sections/      Hero, Work, About, Lab, Contact (+ CSS Modules)
+  scripts/                  motion primitives + one module per interaction + useInit hook
+  fonts/                    woff2 files (OFL licences alongside)
+content/projects/*.md       one file per project (placeholders in v1)
+content/lab/*.md            one file per lab entry (template only in v1)
 docs/DESIGN.md              the design system
 ```
 
 ## Adding content
 
-**A project** — add `src/content/projects/05-name.md`:
+**A project** — add `content/projects/05-name.md`:
 
 ```yaml
 ---
@@ -58,18 +61,18 @@ href: /work/name # optional; the row becomes a link when present
 ---
 ```
 
-**A lab entry** — copy `src/content/lab/example-entry.md`, set `draft: false`. Category counts on the homepage update automatically.
+**A lab entry** — copy `content/lab/example-entry.md`, set `draft: false`. Category counts on the homepage update automatically.
 
-**Individual pages** — not built yet. When they are, `src/pages/work/[slug].astro` and `src/pages/lab/[slug].astro` read from the same collections; nothing on the homepage needs to change.
+**Individual pages** — not built yet. When they are, `src/app/work/[slug]/page.tsx` and `src/app/lab/[slug]/page.tsx` read from the same loader (`generateStaticParams` over the collection); nothing on the homepage needs to change.
 
 ## Placeholders to replace before launch
 
-| Where                                 | What                          |
-| ------------------------------------- | ----------------------------- |
-| `src/config/site.ts`                  | `email`                       |
-| `astro.config.mjs`                    | `site` (production URL)       |
-| `src/content/projects/`               | the four placeholder projects |
-| `src/components/sections/About.astro` | `Est.` and `Team` facts       |
+| Where                               | What                                       |
+| ----------------------------------- | ------------------------------------------ |
+| `src/config/site.ts`                | `email`                                    |
+| `src/app/layout.tsx`                | `metadataBase` (production URL) once known |
+| `src/content/projects/`             | the four placeholder projects              |
+| `src/components/sections/About.tsx` | `Est.` and `Team` facts                    |
 
 ## Interactions
 
@@ -77,4 +80,4 @@ All of them are discoverable, none are announced. The list, with their touch and
 
 ## Performance
 
-No client framework, no images, no WebGL. Fonts are the largest asset (about 110 KB for both latin subsets). All cursor-driven work runs in a single `requestAnimationFrame` loop that stops the moment values settle.
+No images, no WebGL, no animation libraries. Beyond the React runtime the site's own JavaScript is a few kilobytes; fonts are about 110 KB for both latin subsets. All cursor-driven work runs in `requestAnimationFrame` loops that stop the moment values settle.

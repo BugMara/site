@@ -1,0 +1,132 @@
+.work {
+  padding-top: var(--s-section);
+}
+
+.list {
+  margin-top: var(--s-6);
+}
+
+.item {
+  border-bottom: 1px solid var(--c-rule);
+  transition:
+    opacity var(--d-2) var(--ease-out),
+    border-color var(--d-2) var(--ease-out);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr auto;
+  align-items: baseline;
+  column-gap: var(--gutter);
+  padding-block: var(--s-6);
+}
+
+.idx {
+  transition: color var(--d-1) var(--ease-out);
+}
+
+.name {
+  color: var(--c-fg);
+  transition: translate var(--d-2) var(--ease-out);
+}
+
+.meta {
+  display: flex;
+  gap: var(--s-6);
+  justify-self: end;
+  text-align: right;
+  white-space: nowrap;
+  transition: color var(--d-1) var(--ease-out);
+}
+
+.cell {
+  min-width: 5ch;
+}
+
+/* ---- hover / focus: the row wakes, its siblings step back ----------------- */
+.row:hover .idx,
+.row:focus-visible .idx {
+  color: var(--c-accent);
+}
+
+.row:hover .name,
+.row:focus-visible .name {
+  translate: 12px 0;
+}
+
+.row:hover .meta,
+.row:focus-visible .meta {
+  color: var(--c-fg);
+}
+
+.item:has(.row:hover),
+.item:has(.row:focus-visible) {
+  border-color: var(--c-rule-2);
+}
+
+.list:has(.row:hover) .item:not(:has(.row:hover)),
+.list:has(.row:focus-visible) .item:not(:has(.row:focus-visible)) {
+  opacity: 0.32;
+}
+
+/* ---- plate ---------------------------------------------------------------- */
+.plate {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  display: none;
+  width: 14rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--d-2) var(--ease-out);
+  will-change: translate;
+}
+
+.plate[data-on] {
+  opacity: 1;
+}
+
+.media {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  border: 1px solid var(--c-rule-2);
+  background: var(--c-bg);
+}
+
+.plateIdx {
+  color: var(--c-fg-3);
+}
+
+.plateTitle {
+  display: block;
+  margin-top: var(--s-2);
+  color: var(--c-fg-3);
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  :global(html[data-js]) .plate {
+    display: block;
+  }
+}
+
+/* ---- recomposition -------------------------------------------------------- */
+@media (max-width: 63.99em) {
+  .row {
+    grid-template-columns: 3rem 1fr;
+    row-gap: var(--s-3);
+    padding-block: var(--s-5);
+  }
+
+  .meta {
+    grid-column: 2;
+    justify-self: start;
+    text-align: left;
+  }
+
+  .row:hover .name,
+  .row:focus-visible .name {
+    translate: 6px 0;
+  }
+}

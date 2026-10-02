@@ -235,6 +235,17 @@ html[data-js] [data-reveal].is-in {
   translate: 0 0;
 }
 
+/* ---- split text (components/SplitText) ----------------------------- */
+
+.line {
+  display: block;
+  white-space: nowrap;
+}
+
+.ch {
+  display: inline;
+}
+
 /* ---- custom cursor active: hide the native one ------------------- */
 
 html[data-cursor-on],

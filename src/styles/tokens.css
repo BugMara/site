@@ -19,8 +19,8 @@
   --c-on-accent: #0a0a0a;
 
   /* ---- type -------------------------------------------------------- */
-  --f-sans: 'Archivo Variable', 'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --f-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --f-sans: var(--font-sans), 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --f-mono: var(--font-mono), ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 
   --t-display: clamp(3.5rem, 15vw, 17rem);
   --t-h1: clamp(2.75rem, 8vw, 8.5rem);

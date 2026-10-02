@@ -1,0 +1,91 @@
+.about {
+  padding-top: var(--s-section);
+}
+
+.body {
+  margin-top: var(--s-block);
+  row-gap: var(--s-8);
+}
+
+.manifesto {
+  grid-column: 1 / 9;
+  /* One statement per line at every width: slightly under --t-h1. */
+  font-size: clamp(2.5rem, 6.2vw, 6.75rem);
+  color: var(--c-fg);
+}
+
+.manifesto p {
+  color: var(--c-fg-3);
+  transition: color var(--d-2) var(--ease-out);
+}
+
+.manifesto p:first-child,
+.manifesto p:last-child {
+  color: var(--c-fg);
+}
+
+.manifesto:hover p {
+  color: var(--c-fg);
+}
+
+.text {
+  grid-column: 9 / 13;
+  align-self: end;
+  display: grid;
+  gap: var(--s-7);
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-4) var(--s-6);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--c-rule);
+}
+
+.fact {
+  display: grid;
+  gap: var(--s-1);
+}
+
+.fact dd {
+  color: var(--c-fg-2);
+}
+
+/* ---- "WE BREAK." fractures while held -------------------------------------- */
+.break :global(.ch) {
+  display: inline-block;
+  transition:
+    translate var(--d-2) var(--ease-out),
+    rotate var(--d-2) var(--ease-out);
+}
+
+.break:hover :global(.ch),
+.break:active :global(.ch) {
+  translate: calc((var(--sx) - 0.5) * 0.06em) calc((var(--sy) - 0.5) * 0.08em);
+  rotate: calc((var(--sx) - 0.5) * 4deg);
+}
+
+/* The full stop falls further than the letters. */
+.break:hover :global(.ch:last-child),
+.break:active :global(.ch:last-child) {
+  translate: 0 0.1em;
+  rotate: 0deg;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .break :global(.ch) {
+    transition: none;
+  }
+}
+
+/* ---- recomposition -------------------------------------------------------- */
+@media (max-width: 63.99em) {
+  .manifesto,
+  .text {
+    grid-column: 1 / -1;
+  }
+  .text {
+    max-width: 36rem;
+  }
+}
