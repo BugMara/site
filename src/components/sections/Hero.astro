@@ -1,0 +1,201 @@
+---
+import SplitText from '../SplitText.astro';
+import Clock from '../Clock.astro';
+import { site, formatCoordinate } from '../../config/site';
+
+const { location } = site;
+---
+
+<section class="hero wrap" id="top" aria-labelledby="hero-title" data-hero>
+  <div class="hero__top">
+    <p class="meta">EXP. {site.experiment}</p>
+    <p class="meta hero__status">
+      <i class="dot dot--live" aria-hidden="true"></i>
+      <span>System active</span>
+    </p>
+  </div>
+
+  <div class="hero__stage grid">
+    <p class="meta hero__idx" aria-hidden="true">
+      01
+    </p>
+
+    <SplitText
+      as="h1"
+      id="hero-title"
+      class="display hero__title"
+      lines={['WE BUILD', 'THINGS.']}
+      data-breathe
+    />
+
+    <div class="hero__coords micro" data-proximity>
+      <p>{formatCoordinate(location.lat, 'lat')}</p>
+      <p>{formatCoordinate(location.lng, 'lng')}</p>
+      <p class="hero__elev">Elev. {location.elevationM} m</p>
+      <Clock class="micro" />
+    </div>
+  </div>
+
+  <div class="hero__foot">
+    <p class="meta hero__tag">{site.tagline}</p>
+  </div>
+</section>
+
+<style>
+  @property --base {
+    syntax: '<percentage>';
+    inherits: true;
+    initial-value: 100%;
+  }
+
+  .hero {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100svh;
+    padding-top: calc(var(--nav-h) + var(--s-6));
+  }
+
+  /* ---- top-left metadata ----------------------------------------------- */
+  .hero__top {
+    display: grid;
+    gap: var(--s-2);
+    justify-items: start;
+  }
+
+  .hero__status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-3);
+    color: var(--c-fg-2);
+  }
+
+  /* ---- stage ----------------------------------------------------------- */
+  .hero__stage {
+    align-content: center;
+    padding-block: var(--s-block);
+  }
+
+  .hero__idx,
+  .hero__title {
+    grid-column: 3 / -1;
+  }
+
+  .hero__idx {
+    margin-bottom: var(--s-6);
+  }
+
+  .hero__title {
+    --base: 100%;
+    color: var(--c-fg);
+  }
+
+  /* `--p` (0..1) is written per letter by scripts/hero.ts; `--base` by the scroll animation. */
+  .hero__title :global(.ch) {
+    font-stretch: calc(var(--base) + var(--p, 0) * 10%);
+  }
+
+  .hero__coords {
+    grid-column: 9 / -1;
+    justify-self: end;
+    display: grid;
+    gap: var(--s-1);
+    margin-top: var(--s-7);
+    text-align: right;
+  }
+
+  .hero__coords :global(.clock) {
+    justify-self: end;
+    margin-top: var(--s-2);
+  }
+
+  /* Elevation line: revealed by pointer proximity when the field is live; otherwise visible. */
+  .hero.is-live .hero__elev {
+    opacity: var(--p, 0);
+  }
+
+  /* ---- foot ------------------------------------------------------------ */
+  .hero__foot {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: var(--s-6);
+    border-bottom: 1px solid var(--c-rule);
+  }
+
+  /* ---- scroll-linked: the statement compresses as it leaves ---------- */
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .hero__title {
+        animation: hero-compress linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 100svh;
+      }
+      .hero__top,
+      .hero__coords,
+      .hero__idx {
+        animation: hero-fade linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 55svh;
+      }
+    }
+  }
+
+  @keyframes hero-compress {
+    to {
+      --base: 84%;
+      letter-spacing: -0.065em;
+      opacity: 0.3;
+    }
+  }
+
+  @keyframes hero-fade {
+    to {
+      opacity: 0;
+    }
+  }
+
+  /* ---- recomposition under lg ----------------------------------------- */
+  @media (max-width: 63.99em) {
+    /* Poster composition: the statement sits low, the void is above it. */
+    .hero__stage {
+      align-content: end;
+      padding-block: var(--s-8) var(--s-7);
+    }
+
+    .hero__idx,
+    .hero__title {
+      grid-column: 1 / -1;
+    }
+
+    .hero__coords {
+      grid-column: 1 / -1;
+      justify-self: start;
+      grid-template-columns: repeat(2, max-content);
+      column-gap: var(--s-7);
+      text-align: left;
+    }
+
+    .hero__coords :global(.clock) {
+      justify-self: start;
+      margin-top: 0;
+    }
+  }
+
+  @media (max-width: 47.99em) {
+    .hero {
+      padding-top: calc(var(--nav-h) + var(--s-5));
+    }
+    .hero__coords {
+      margin-top: var(--s-6);
+    }
+    .hero__foot {
+      padding-bottom: var(--s-5);
+    }
+  }
+</style>
+
+<script>
+  import { initHero } from '../../scripts/hero';
+  const hero = document.querySelector<HTMLElement>('[data-hero]');
+  if (hero) initHero(hero);
+</script>

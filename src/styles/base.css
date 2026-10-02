@@ -1,0 +1,262 @@
+/* BUGMARA — base: reset, document, type classes, utilities, enhancement gates */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background: var(--c-bg);
+  color: var(--c-fg);
+  font-family: var(--f-sans);
+  font-size: 100%;
+  font-weight: var(--w-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-padding-top: var(--nav-h);
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  min-height: 100svh;
+  overflow-x: clip;
+  font-size: var(--t-body);
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+p {
+  font-size: inherit;
+  font-weight: inherit;
+  overflow-wrap: break-word;
+}
+
+::selection {
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+}
+
+:focus-visible {
+  outline: 1px solid var(--c-accent);
+  outline-offset: 4px;
+}
+
+/* ---- type classes ------------------------------------------------- */
+
+.display,
+.h1,
+.h2 {
+  font-family: var(--f-sans);
+  font-weight: var(--w-display);
+  text-transform: uppercase;
+  font-kerning: normal;
+}
+
+.display {
+  font-size: var(--t-display);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+}
+
+.h1 {
+  font-size: var(--t-h1);
+  line-height: var(--lh-h1);
+  letter-spacing: var(--ls-h1);
+}
+
+.h2 {
+  font-size: var(--t-h2);
+  line-height: var(--lh-h2);
+  letter-spacing: var(--ls-h2);
+}
+
+.body {
+  font-size: var(--t-body);
+  line-height: var(--lh-body);
+  color: var(--c-fg-2);
+  max-width: 52ch;
+}
+
+.small {
+  font-size: var(--t-small);
+  line-height: 1.45;
+  color: var(--c-fg-2);
+}
+
+.meta,
+.micro {
+  font-family: var(--f-mono);
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--c-fg-3);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+.meta {
+  font-size: var(--t-meta);
+  line-height: var(--lh-meta);
+  letter-spacing: var(--ls-meta);
+}
+
+.micro {
+  font-size: var(--t-micro);
+  line-height: 1.3;
+  letter-spacing: var(--ls-micro);
+}
+
+.accent {
+  color: var(--c-accent);
+}
+
+/* ---- layout utilities ---------------------------------------------- */
+
+.wrap {
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--margin);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+}
+
+.rule {
+  height: 1px;
+  background: var(--c-rule);
+  border: 0;
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip {
+  position: fixed;
+  top: var(--s-3);
+  left: var(--s-3);
+  z-index: calc(var(--z-nav) + 1);
+  padding: var(--s-2) var(--s-3);
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+  font-family: var(--f-mono);
+  font-size: var(--t-meta);
+  letter-spacing: var(--ls-meta);
+  text-transform: uppercase;
+  transform: translateY(-200%);
+}
+
+.skip:focus-visible {
+  transform: none;
+  outline-offset: 2px;
+}
+
+/* ---- status dot ---------------------------------------------------- */
+
+.dot {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  background: var(--c-accent);
+  vertical-align: middle;
+  translate: 0 -1px;
+}
+
+.dot--live {
+  animation: dot-pulse 4s var(--ease-io) infinite;
+}
+
+@keyframes dot-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+/* ---- reveal (JS-gated; without JS everything is simply visible) ---- */
+
+html[data-js] [data-reveal] {
+  opacity: 0;
+  translate: 0 12px;
+  transition:
+    opacity var(--d-3) var(--ease-out),
+    translate var(--d-3) var(--ease-out);
+  transition-delay: var(--delay, 0ms);
+}
+
+html[data-js] [data-reveal].is-in {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* ---- custom cursor active: hide the native one ------------------- */
+
+html[data-cursor-on],
+html[data-cursor-on] a,
+html[data-cursor-on] button,
+html[data-cursor-on] [data-cursor] {
+  cursor: none;
+}
+
+/* ---- reduced motion ------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .dot--live {
+    animation: none;
+  }
+}

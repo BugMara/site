@@ -1,0 +1,35 @@
+---
+import { site } from '../config/site';
+
+interface Props {
+  class?: string;
+}
+const { class: className = 'meta' } = Astro.props;
+const { timeZone, tzLabel, city } = site.location;
+---
+
+<span
+  class:list={['clock', className]}
+  data-clock
+  data-tz={timeZone}
+  aria-label={`Local time in ${city}`}
+>
+  <span>{tzLabel}</span>
+  <span data-clock-time>--:--:--</span>
+</span>
+
+<style>
+  .clock {
+    display: inline-flex;
+    gap: 0.6em;
+    white-space: nowrap;
+  }
+  html:not([data-js]) .clock {
+    display: none;
+  }
+</style>
+
+<script>
+  import { initClocks } from '../scripts/clock';
+  initClocks();
+</script>

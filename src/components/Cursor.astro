@@ -1,0 +1,103 @@
+---
+/**
+ * Custom cursor. Decorative; hidden from assistive tech. Activated by scripts/cursor.ts
+ * only on fine-pointer devices without a reduced-motion preference.
+ */
+---
+
+<div class="cursor" aria-hidden="true" data-cursor-root>
+  <div class="cursor__dot" data-cursor-dot></div>
+  <div class="cursor__ring" data-cursor-ring>
+    <span class="cursor__label micro" data-cursor-label></span>
+  </div>
+</div>
+
+<style>
+  .cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: var(--z-cursor);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--d-1) var(--ease-out);
+  }
+
+  .cursor[data-visible] {
+    opacity: 1;
+  }
+
+  .cursor__dot,
+  .cursor__ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    will-change: translate;
+  }
+
+  .cursor__dot {
+    mix-blend-mode: difference;
+    width: 6px;
+    height: 6px;
+    margin: -3px;
+    border-radius: 50%;
+    background: var(--c-fg);
+    transition: scale var(--d-1) var(--ease-out);
+  }
+
+  .cursor__ring {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    margin: -16px;
+    border: 1px solid rgb(var(--c-fg-rgb) / 0.55);
+    border-radius: 50%;
+    opacity: 0;
+    scale: 0.4;
+    transition:
+      scale var(--d-2) var(--ease-out),
+      opacity var(--d-1) var(--ease-out),
+      border-color var(--d-1) var(--ease-out);
+  }
+
+  .cursor__label {
+    color: var(--c-fg);
+    opacity: 0;
+    transition: opacity var(--d-1) var(--ease-out);
+  }
+
+  .cursor[data-state='link'] .cursor__ring {
+    opacity: 1;
+    scale: 1;
+  }
+  .cursor[data-state='link'] .cursor__dot {
+    scale: 0.5;
+  }
+
+  .cursor[data-state='view'] .cursor__ring {
+    opacity: 1;
+    scale: 1.75;
+    border-color: var(--c-accent);
+  }
+  .cursor[data-state='view'] .cursor__label {
+    opacity: 1;
+    scale: calc(1 / 1.75);
+  }
+  .cursor[data-state='view'] .cursor__dot {
+    scale: 0;
+  }
+
+  .cursor[data-down] .cursor__dot {
+    scale: 0.6;
+  }
+  .cursor[data-down] .cursor__ring {
+    scale: 0.9;
+  }
+</style>
+
+<script>
+  import { initCursor } from '../scripts/cursor';
+  const root = document.querySelector<HTMLElement>('[data-cursor-root]');
+  if (root) initCursor(root);
+</script>

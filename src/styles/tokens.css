@@ -1,0 +1,92 @@
+/*
+  BUGMARA — design tokens
+  Every value documented in docs/DESIGN.md lives here. Nothing else defines a colour, size or duration.
+
+  Breakpoints (CSS has no custom-property media queries; keep these in sync with docs/DESIGN.md):
+    sm 40em (640px) · md 48em (768px) · lg 64em (1024px) · xl 80em (1280px)
+*/
+
+:root {
+  /* ---- colour ------------------------------------------------------ */
+  --c-bg: #0a0a0a;
+  --c-fg: #f4f3ee;
+  --c-fg-rgb: 244 243 238;
+  --c-fg-2: rgb(var(--c-fg-rgb) / 0.64); /* body copy          ≈ 8.4:1 */
+  --c-fg-3: rgb(var(--c-fg-rgb) / 0.5); /* metadata, labels   ≈ 4.9:1 */
+  --c-rule: rgb(var(--c-fg-rgb) / 0.12);
+  --c-rule-2: rgb(var(--c-fg-rgb) / 0.28);
+  --c-accent: #fdb614;
+  --c-on-accent: #0a0a0a;
+
+  /* ---- type -------------------------------------------------------- */
+  --f-sans: 'Archivo Variable', 'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --f-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  --t-display: clamp(3.5rem, 15vw, 17rem);
+  --t-h1: clamp(2.75rem, 8vw, 8.5rem);
+  --t-h2: clamp(1.5rem, 3.6vw, 3.75rem);
+  --t-body: 1.0625rem;
+  --t-small: 0.8125rem;
+  --t-meta: 0.6875rem;
+  --t-micro: 0.625rem;
+
+  --lh-display: 0.86;
+  --lh-h1: 0.9;
+  --lh-h2: 1;
+  --lh-body: 1.5;
+  --lh-meta: 1.4;
+
+  --ls-display: -0.04em;
+  --ls-h1: -0.035em;
+  --ls-h2: -0.025em;
+  --ls-meta: 0.08em;
+  --ls-micro: 0.1em;
+
+  --w-display: 600;
+  --w-body: 400;
+
+  /* ---- space ------------------------------------------------------- */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+  --s-9: 6rem;
+  --s-block: clamp(4rem, 10vh, 8rem);
+  --s-section: clamp(9rem, 22vh, 18rem);
+
+  --margin: clamp(1.25rem, 5vw, 6rem);
+  --gutter: clamp(1rem, 2.5vw, 2.5rem);
+  --max: 1760px;
+  --nav-h: 4rem;
+
+  /* ---- motion ------------------------------------------------------ */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+  --d-1: 160ms;
+  --d-2: 360ms;
+  --d-3: 720ms;
+
+  /* ---- layers ------------------------------------------------------ */
+  --z-rail: 10;
+  --z-nav: 20;
+  --z-cursor: 100;
+}
+
+@media (max-width: 47.99em) {
+  :root {
+    --t-display: clamp(3.25rem, 17vw, 6.5rem);
+    --nav-h: 3.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --d-1: 1ms;
+    --d-2: 1ms;
+    --d-3: 1ms;
+  }
+}

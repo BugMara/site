@@ -1,0 +1,188 @@
+---
+import { getCollection } from 'astro:content';
+import SectionHead from '../SectionHead.astro';
+import { site } from '../../config/site';
+
+const entries = await getCollection('lab', ({ data }) => !data.draft);
+const pad = (n: number) => String(n).padStart(2, '0');
+const categories = site.lab.categories.map((c) => ({
+  ...c,
+  count: entries.filter((e) => e.data.category === c.key).length,
+}));
+---
+
+<section class="lab wrap" id="lab" aria-labelledby="lab-title" data-lab>
+  <SectionHead index="03" label="Lab" id="lab-title">
+    <span slot="aside" class="lab__readout" aria-hidden="true">
+      <span>X</span>
+      <span class="lab__value" data-lab-x>
+        0000
+      </span>
+      <span>Y</span>
+      <span class="lab__value" data-lab-y>
+        0000
+      </span>
+    </span>
+  </SectionHead>
+
+  <div class="lab__body grid">
+    <p class="lab__statement h1" data-reveal>
+      The Lab
+    </p>
+    <p class="lab__intro small" data-reveal style="--delay:100ms">
+      Experiments, prototypes, research, failed ideas, technical notes, build logs. Published when
+      they are ready, including the ones that did not work.
+    </p>
+  </div>
+
+  <ol class="lab__list">
+    {categories.map((c, i) => (
+      <li class="lab__item" style={`--delay:${i * 70}ms`} data-reveal data-lab-row>
+        <span class="lab__idx meta">{c.index}</span>
+        <span class="lab__name h2">{c.label}</span>
+        <span class="lab__count meta">
+          <span class="lab__n">{pad(c.count)}</span> entries
+        </span>
+      </li>
+    ))}
+  </ol>
+
+  <!-- Measuring hairlines (scripts/lab.ts). Decorative. -->
+  <span class="lab__hair lab__hair--x" aria-hidden="true" data-lab-hx></span>
+  <span class="lab__hair lab__hair--y" aria-hidden="true" data-lab-hy></span>
+</section>
+
+<style>
+  .lab {
+    position: relative;
+    padding-top: var(--s-section);
+    overflow: clip;
+  }
+
+  .lab__readout {
+    display: inline-flex;
+    gap: 0.75em;
+  }
+
+  .lab__value {
+    color: var(--c-fg-2);
+    min-width: 4ch;
+    text-align: left;
+  }
+
+  html:not([data-js]) .lab__readout {
+    display: none;
+  }
+
+  .lab__body {
+    margin-top: var(--s-block);
+    row-gap: var(--s-6);
+    align-items: end;
+  }
+
+  .lab__statement {
+    grid-column: 1 / 8;
+    color: var(--c-fg);
+  }
+
+  .lab__intro {
+    grid-column: 9 / 13;
+    max-width: 34ch;
+  }
+
+  /* ---- categories: a 2 × 2 field of large words ------------------------- */
+  .lab__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    margin-top: var(--s-block);
+    border-top: 1px solid var(--c-rule);
+  }
+
+  .lab__item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 3rem 1fr auto;
+    align-items: baseline;
+    column-gap: var(--s-4);
+    padding-block: var(--s-7);
+    border-bottom: 1px solid var(--c-rule);
+  }
+
+  .lab__idx {
+    transition: color var(--d-1) var(--ease-out);
+  }
+
+  .lab__item[data-hit] .lab__idx {
+    color: var(--c-accent);
+  }
+
+  .lab__name {
+    color: var(--c-fg-2);
+    transition: color var(--d-2) var(--ease-out);
+  }
+
+  .lab__item[data-hit] .lab__name {
+    color: var(--c-fg);
+  }
+
+  .lab__count {
+    white-space: nowrap;
+  }
+
+  .lab__n {
+    color: var(--c-fg-2);
+  }
+
+  /* ---- hairlines ---------------------------------------------------------- */
+  .lab__hair {
+    position: absolute;
+    display: none;
+    pointer-events: none;
+    background: var(--c-rule-2);
+    opacity: 0;
+    transition: opacity var(--d-2) var(--ease-out);
+  }
+
+  .lab__hair--x {
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+  }
+
+  .lab__hair--y {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 1px;
+  }
+
+  .lab.is-live:not([data-mode='scroll']) .lab__hair {
+    display: block;
+  }
+
+  .lab[data-on] .lab__hair {
+    opacity: 1;
+  }
+
+  /* ---- recomposition ----------------------------------------------------- */
+  @media (max-width: 63.99em) {
+    .lab__statement,
+    .lab__intro {
+      grid-column: 1 / -1;
+    }
+    .lab__list {
+      grid-template-columns: 1fr;
+    }
+    .lab__item {
+      padding-block: var(--s-5);
+    }
+  }
+</style>
+
+<script>
+  import { initLab } from '../../scripts/lab';
+  const section = document.querySelector<HTMLElement>('[data-lab]');
+  if (section) initLab(section);
+</script>

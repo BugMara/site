@@ -1,0 +1,121 @@
+---
+import SectionHead from '../SectionHead.astro';
+import Clock from '../Clock.astro';
+import { site } from '../../config/site';
+---
+
+<section class="contact wrap" id="contact" aria-labelledby="contact-title">
+  <SectionHead index="04" label="Contact" id="contact-title" />
+
+  <div class="contact__body grid">
+    <p class="contact__statement h1" data-reveal>
+      Say
+      <br />
+      hello.
+    </p>
+
+    <div class="contact__channels" data-reveal style="--delay:120ms">
+      <a class="contact__mail h2" href={`mailto:${site.email}`}>
+        {site.email}
+      </a>
+
+      <ul class="contact__links meta">
+        {site.links.map((l) => (
+          <li>
+            <a class="contact__link" href={l.href} rel="noopener">
+              {l.label} ↗
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <p class="contact__where meta">
+        <span>
+          {site.location.city}, {site.location.country}
+        </span>
+        <Clock />
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact {
+    padding-top: var(--s-section);
+    padding-bottom: var(--s-section);
+  }
+
+  .contact__body {
+    margin-top: var(--s-block);
+    row-gap: var(--s-8);
+    align-items: end;
+  }
+
+  .contact__statement {
+    grid-column: 1 / 7;
+    color: var(--c-fg);
+  }
+
+  .contact__channels {
+    grid-column: 7 / 13;
+    display: grid;
+    gap: var(--s-6);
+    justify-items: start;
+  }
+
+  .contact__mail {
+    position: relative;
+    text-transform: none;
+    letter-spacing: -0.02em;
+    color: var(--c-fg);
+    overflow-wrap: anywhere;
+  }
+
+  /* An underline that is drawn, not shown. */
+  .contact__mail::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.08em;
+    height: 1px;
+    background: var(--c-accent);
+    scale: 0 1;
+    transform-origin: left;
+    transition: scale var(--d-2) var(--ease-out);
+  }
+
+  .contact__mail:hover::after,
+  .contact__mail:focus-visible::after {
+    scale: 1 1;
+  }
+
+  .contact__links {
+    display: flex;
+    gap: var(--s-5);
+  }
+
+  .contact__link {
+    transition: color var(--d-1) var(--ease-out);
+  }
+
+  .contact__link:hover,
+  .contact__link:focus-visible {
+    color: var(--c-fg);
+  }
+
+  .contact__where {
+    display: flex;
+    gap: var(--s-5);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--c-rule);
+    width: 100%;
+  }
+
+  @media (max-width: 63.99em) {
+    .contact__statement,
+    .contact__channels {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

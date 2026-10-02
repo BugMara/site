@@ -1,0 +1,130 @@
+---
+import { site } from '../config/site';
+import Clock from './Clock.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer wrap" id="footer">
+  <div class="footer__top">
+    <p class="footer__brand">{site.name}</p>
+    <div class="footer__desc">
+      <p class="meta">{site.tagline}</p>
+      <p class="meta footer__place">{site.location.country}</p>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <p class="meta">
+      © {year} {site.name}
+    </p>
+    <ul class="footer__links">
+      <li>
+        <a class="meta footer__link" href={`mailto:${site.email}`}>
+          Email
+        </a>
+      </li>
+      {site.links.map((l) => (
+        <li>
+          <a class="meta footer__link" href={l.href} rel="noopener">
+            {l.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+    <Clock />
+    <a class="meta footer__link footer__top-link" href="#top">
+      Top ↑
+    </a>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding-block: var(--s-8) var(--s-6);
+    border-top: 1px solid var(--c-rule);
+  }
+
+  .footer__top {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--s-6);
+    padding-bottom: var(--s-8);
+  }
+
+  .footer__brand {
+    font-weight: var(--w-display);
+    font-size: 1.5rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  .footer__desc {
+    display: grid;
+    gap: var(--s-1);
+    text-align: right;
+  }
+
+  .footer__place {
+    color: var(--c-fg-2);
+  }
+
+  .footer__bottom {
+    display: flex;
+    align-items: center;
+    gap: var(--s-6);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--c-rule);
+  }
+
+  .footer__links {
+    display: flex;
+    gap: var(--s-5);
+  }
+
+  .footer__link {
+    color: var(--c-fg-3);
+    transition: color var(--d-1) var(--ease-out);
+  }
+
+  .footer__link:hover,
+  .footer__link:focus-visible {
+    color: var(--c-fg);
+  }
+
+  .footer__top-link {
+    margin-left: auto;
+  }
+
+  .footer :global(.clock) {
+    margin-left: auto;
+  }
+
+  .footer :global(.clock) + .footer__top-link {
+    margin-left: 0;
+  }
+
+  @media (max-width: 47.99em) {
+    .footer__top {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .footer__desc {
+      text-align: left;
+    }
+    .footer__bottom {
+      flex-wrap: wrap;
+      row-gap: var(--s-4);
+    }
+    .footer :global(.clock) {
+      order: 3;
+      margin-left: 0;
+    }
+    .footer__top-link {
+      order: 4;
+      margin-left: auto;
+    }
+  }
+</style>

@@ -1,0 +1,47 @@
+---
+/**
+ * Tiny technical section header: "01 / WORK" with an optional right-aligned aside.
+ * The label is the section's real heading (h2); the large statements below it are prose.
+ */
+interface Props {
+  index: string;
+  label: string;
+  id: string;
+}
+const { index, label, id } = Astro.props;
+---
+
+<header class="shead" data-reveal>
+  <span class="shead__idx meta">{index}</span>
+  <span class="shead__sep meta" aria-hidden="true">
+    /
+  </span>
+  <h2 class="shead__label meta" id={id}>
+    {label}
+  </h2>
+  <div class="shead__aside meta">
+    <slot name="aside" />
+  </div>
+</header>
+
+<style>
+  .shead {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-3);
+    padding-bottom: var(--s-4);
+    border-bottom: 1px solid var(--c-rule);
+  }
+  .shead__label {
+    color: var(--c-fg);
+  }
+  .shead__aside {
+    margin-left: auto;
+    display: flex;
+    gap: var(--s-6);
+    text-align: right;
+  }
+  .shead__aside:empty {
+    display: none;
+  }
+</style>
